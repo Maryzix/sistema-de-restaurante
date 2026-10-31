@@ -20,7 +20,7 @@ public class RestauranteFacade {
         return gerenciador.buscarPedido(numero);
     }
 
-    public void adicionarLanche(Pedido pedido, Lanche lanche) {
+    public void adicionarLanche(Pedido pedido, ItemCardapio lanche) {
         pedido.adicionarItem(lanche);
     }
 
@@ -64,6 +64,7 @@ public class RestauranteFacade {
     public Lanche criarLanche(int opcao) {
 
         switch (opcao) {
+
             case 1:
                 return LancheFactory.xBurger();
 

@@ -1,5 +1,6 @@
 package br.com.restaurante.app;
 
+import br.com.restaurante.cardapio.ItemCardapio;
 import br.com.restaurante.cardapio.Lanche;
 import br.com.restaurante.pedido.Pedido;
 import br.com.restaurante.pedido.RestauranteFacade;
@@ -16,11 +17,13 @@ public class Main {
         while (executando) {
 
             menu.exibirMenu();
+
             int opcao = menu.lerOpcao();
 
             switch (opcao) {
 
                 case 1:
+
                     String nome = menu.lerNomeCliente();
 
                     Pedido pedido = sistema.criarPedido(nome);
@@ -33,14 +36,13 @@ public class Main {
 
                         Lanche lanche = sistema.criarLanche(escolha);
 
-                        if (lanche == null) {
-                            menu.exibirMensagem("Opção de lanche inválida!");
-                            continue;
-                        }
+                        ItemCardapio itemPersonalizado =
+                                menu.personalizarLanche(lanche);
 
-                        lanche = menu.personalizarLanche(lanche);
-
-                        sistema.adicionarLanche(pedido, lanche);
+                        sistema.adicionarLanche(
+                                pedido,
+                                itemPersonalizado
+                        );
 
                         adicionar = menu.querAdicionarItem();
                     }
@@ -49,13 +51,19 @@ public class Main {
                     break;
 
                 case 2:
+
                     menu.exibirPedidos(sistema.listarPedidos());
                     break;
 
                 case 3:
+
                     double total = sistema.calcularTotalDoDia();
 
                     menu.exibirFechamentoDoDia(total);
+
+                    menu.exibirCombinacoesDiferentes(
+                            sistema.listarCombinacoesDiferentes()
+                    );
 
                     executando = false;
                     break;
@@ -64,7 +72,8 @@ public class Main {
 
                     int numeroPedido = menu.lerNumeroPedido();
 
-                    Pedido pedidoEncontrado = sistema.buscarPedido(numeroPedido);
+                    Pedido pedidoEncontrado =
+                            sistema.buscarPedido(numeroPedido);
 
                     if (pedidoEncontrado == null) {
                         menu.exibirMensagem("Pedido não encontrado!");
@@ -79,7 +88,8 @@ public class Main {
 
                         menu.exibirMenuModificacao();
 
-                        int opcaoModificacao = menu.lerOpcaoModificacao();
+                        int opcaoModificacao =
+                                menu.lerOpcaoModificacao();
 
                         switch (opcaoModificacao) {
 
@@ -87,21 +97,21 @@ public class Main {
 
                                 int escolha = menu.lerOpcaoLanche();
 
-                                Lanche novoLanche = sistema.criarLanche(escolha);
+                                Lanche novoLanche =
+                                        sistema.criarLanche(escolha);
 
-                                if (novoLanche == null) {
-                                    menu.exibirMensagem("Opção de lanche inválida!");
-                                    break;
-                                }
-
-                                novoLanche = menu.personalizarLanche(novoLanche);
+                                ItemCardapio novoItem =
+                                        menu.personalizarLanche(novoLanche);
 
                                 sistema.adicionarLanche(
                                         pedidoEncontrado,
-                                        novoLanche
+                                        novoItem
                                 );
 
-                                menu.exibirMensagem("Item adicionado com sucesso!");
+                                menu.exibirMensagem(
+                                        "Item adicionado com sucesso!"
+                                );
+
                                 menu.exibirPedido(pedidoEncontrado);
 
                                 break;
@@ -114,43 +124,44 @@ public class Main {
                                     break;
                                 }
 
-                                int numeroItem = menu.lerNumeroItem();
+                                int numeroItem = menu.lerNumeroItem(
+                                        pedidoEncontrado.getItens().size()
+                                );
 
-                                try {
-                                    sistema.removerItem(
-                                            pedidoEncontrado,
-                                            numeroItem
-                                    );
+                                sistema.removerItem(
+                                        pedidoEncontrado,
+                                        numeroItem
+                                );
 
-                                    menu.exibirMensagem("Item removido com sucesso!");
+                                menu.exibirMensagem(
+                                        "Item removido com sucesso!"
+                                );
 
-                                    menu.exibirPedido(pedidoEncontrado);
-
-                                } catch (IllegalArgumentException e) {
-                                    menu.exibirMensagem("Número de item inválido!");
-                                }
+                                menu.exibirPedido(pedidoEncontrado);
 
                                 break;
 
                             case 3:
 
-                                boolean cancelado = sistema.cancelarPedido(numeroPedido);
+                                boolean cancelado =
+                                        sistema.cancelarPedido(numeroPedido);
 
                                 if (cancelado) {
-                                    menu.exibirMensagem("Pedido cancelado com sucesso!");
+                                    menu.exibirMensagem(
+                                            "Pedido cancelado com sucesso!"
+                                    );
                                 } else {
-                                    menu.exibirMensagem("Não foi possível cancelar o pedido.");
+                                    menu.exibirMensagem(
+                                            "Não foi possível cancelar o pedido."
+                                    );
                                 }
 
                                 modificando = false;
                                 break;
 
                             case 0:
-                                modificando = false;
-                                break;
 
-                            default:
-                                menu.exibirMensagem("Opção inválida!");
+                                modificando = false;
                                 break;
                         }
                     }
@@ -158,12 +169,9 @@ public class Main {
                     break;
 
                 case 0:
+
                     menu.exibirMensagem("Saindo do sistema...");
                     executando = false;
-                    break;
-
-                default:
-                    menu.exibirMensagem("Opção inválida!");
                     break;
             }
         }
