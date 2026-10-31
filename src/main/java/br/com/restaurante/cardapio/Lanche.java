@@ -1,7 +1,10 @@
 package br.com.restaurante.cardapio;
 
+import lombok.Getter;
+
 public class Lanche implements ItemCardapio {
 
+    @Getter
     private String nome;
     private double preco;
 
@@ -30,10 +33,6 @@ public class Lanche implements ItemCardapio {
     @Override
     public double getPreco() {
         return preco;
-    }
-
-    public String getNome() {
-        return nome;
     }
 
     public void setNome(String nome) {

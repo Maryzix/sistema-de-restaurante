@@ -38,6 +38,8 @@ public class Main {
                             continue;
                         }
 
+                        lanche = menu.personalizarLanche(lanche);
+
                         sistema.adicionarLanche(pedido, lanche);
 
                         adicionar = menu.querAdicionarItem();
@@ -56,6 +58,103 @@ public class Main {
                     menu.exibirFechamentoDoDia(total);
 
                     executando = false;
+                    break;
+
+                case 4:
+
+                    int numeroPedido = menu.lerNumeroPedido();
+
+                    Pedido pedidoEncontrado = sistema.buscarPedido(numeroPedido);
+
+                    if (pedidoEncontrado == null) {
+                        menu.exibirMensagem("Pedido não encontrado!");
+                        break;
+                    }
+
+                    menu.exibirPedido(pedidoEncontrado);
+
+                    boolean modificando = true;
+
+                    while (modificando) {
+
+                        menu.exibirMenuModificacao();
+
+                        int opcaoModificacao = menu.lerOpcaoModificacao();
+
+                        switch (opcaoModificacao) {
+
+                            case 1:
+
+                                int escolha = menu.lerOpcaoLanche();
+
+                                Lanche novoLanche = sistema.criarLanche(escolha);
+
+                                if (novoLanche == null) {
+                                    menu.exibirMensagem("Opção de lanche inválida!");
+                                    break;
+                                }
+
+                                novoLanche = menu.personalizarLanche(novoLanche);
+
+                                sistema.adicionarLanche(
+                                        pedidoEncontrado,
+                                        novoLanche
+                                );
+
+                                menu.exibirMensagem("Item adicionado com sucesso!");
+                                menu.exibirPedido(pedidoEncontrado);
+
+                                break;
+
+                            case 2:
+
+                                menu.exibirItensNumerados(pedidoEncontrado);
+
+                                if (pedidoEncontrado.getItens().isEmpty()) {
+                                    break;
+                                }
+
+                                int numeroItem = menu.lerNumeroItem();
+
+                                try {
+                                    sistema.removerItem(
+                                            pedidoEncontrado,
+                                            numeroItem
+                                    );
+
+                                    menu.exibirMensagem("Item removido com sucesso!");
+
+                                    menu.exibirPedido(pedidoEncontrado);
+
+                                } catch (IllegalArgumentException e) {
+                                    menu.exibirMensagem("Número de item inválido!");
+                                }
+
+                                break;
+
+                            case 3:
+
+                                boolean cancelado = sistema.cancelarPedido(numeroPedido);
+
+                                if (cancelado) {
+                                    menu.exibirMensagem("Pedido cancelado com sucesso!");
+                                } else {
+                                    menu.exibirMensagem("Não foi possível cancelar o pedido.");
+                                }
+
+                                modificando = false;
+                                break;
+
+                            case 0:
+                                modificando = false;
+                                break;
+
+                            default:
+                                menu.exibirMensagem("Opção inválida!");
+                                break;
+                        }
+                    }
+
                     break;
 
                 case 0:
