@@ -1,4 +1,4 @@
-package org.example.pedido;
+package br.com.restaurante.pedido;
 
 import java.util.Collection;
 import java.util.HashMap;

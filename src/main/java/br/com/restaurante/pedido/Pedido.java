@@ -1,7 +1,7 @@
-package org.example.pedido;
+package br.com.restaurante.pedido;
 
 import lombok.Getter;
-import org.example.cardapio.Lanche;
+import br.com.restaurante.cardapio.Lanche;
 import java.util.ArrayList;
 
 @Getter

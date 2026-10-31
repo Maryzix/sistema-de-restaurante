@@ -1,4 +1,4 @@
-package org.example.cardapio;
+package br.com.restaurante.cardapio;
 
 public class Lanche {
     private String nome;
