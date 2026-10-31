@@ -1,10 +1,7 @@
 package br.com.restaurante.cardapio;
 
-import lombok.Getter;
-
 public class Lanche implements ItemCardapio {
 
-    @Getter
     private String nome;
     private double preco;
 
@@ -14,45 +11,39 @@ public class Lanche implements ItemCardapio {
     private boolean cebola = true;
 
     public Lanche(String nome, double preco) {
-        setNome(nome);
-        setPreco(preco);
+
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "O nome do lanche não pode ser vazio."
+            );
+        }
+
+        if (preco < 0) {
+            throw new IllegalArgumentException(
+                    "O preço não pode ser negativo."
+            );
+        }
+
+        this.nome = nome;
+        this.preco = preco;
     }
 
     @Override
     public String getDescricao() {
-        String desc = nome;
 
-        if (!queijo) desc += " sem queijo";
-        if (!alface) desc += " sem alface";
-        if (!tomate) desc += " sem tomate";
-        if (!cebola) desc += " sem cebola";
+        String descricao = nome;
 
-        return desc;
+        if (!queijo) descricao += " sem queijo";
+        if (!alface) descricao += " sem alface";
+        if (!tomate) descricao += " sem tomate";
+        if (!cebola) descricao += " sem cebola";
+
+        return descricao;
     }
 
     @Override
     public double getPreco() {
         return preco;
-    }
-
-    public void setNome(String nome) {
-        if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException(
-                    "O nome não pode ser nulo nem vazio."
-            );
-        }
-
-        this.nome = nome;
-    }
-
-    public void setPreco(double preco) {
-        if (preco < 0) {
-            throw new IllegalArgumentException(
-                    "O preço não pode ser negativo!"
-            );
-        }
-
-        this.preco = preco;
     }
 
     public boolean isQueijo() {
