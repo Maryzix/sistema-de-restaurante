@@ -1,13 +1,24 @@
 package br.com.restaurante.cardapio;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Lanche implements ItemCardapio {
 
     private String nome;
     private double preco;
 
+    @Setter
+    @Getter
     private boolean queijo = true;
+    @Setter
+    @Getter
     private boolean alface = true;
+    @Setter
+    @Getter
     private boolean tomate = true;
+    @Setter
+    @Getter
     private boolean cebola = true;
 
     public Lanche(String nome, double preco) {
@@ -42,39 +53,13 @@ public class Lanche implements ItemCardapio {
     }
 
     @Override
+    public String getNomeBase() {
+        return nome;
+    }
+
+    @Override
     public double getPreco() {
         return preco;
     }
 
-    public boolean isQueijo() {
-        return queijo;
-    }
-
-    public void setQueijo(boolean queijo) {
-        this.queijo = queijo;
-    }
-
-    public boolean isAlface() {
-        return alface;
-    }
-
-    public void setAlface(boolean alface) {
-        this.alface = alface;
-    }
-
-    public boolean isTomate() {
-        return tomate;
-    }
-
-    public void setTomate(boolean tomate) {
-        this.tomate = tomate;
-    }
-
-    public boolean isCebola() {
-        return cebola;
-    }
-
-    public void setCebola(boolean cebola) {
-        this.cebola = cebola;
-    }
 }

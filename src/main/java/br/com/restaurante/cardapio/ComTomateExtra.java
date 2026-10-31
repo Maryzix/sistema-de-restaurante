@@ -14,6 +14,11 @@ public class ComTomateExtra implements ItemCardapio {
     }
 
     @Override
+    public String getNomeBase() {
+        return item.getNomeBase();
+    }
+
+    @Override
     public double getPreco() {
         return item.getPreco() + 1.50;
     }

@@ -1,6 +1,8 @@
 package br.com.restaurante.app;
 
 import br.com.restaurante.cardapio.*;
+import br.com.restaurante.financeiro.Caixa;
+import br.com.restaurante.financeiro.Transacao;
 import br.com.restaurante.pedido.Pedido;
 
 import java.util.Collection;
@@ -18,16 +20,12 @@ public class MenuConsole {
             System.out.print(mensagem);
 
             try {
-
                 int numero = scanner.nextInt();
                 scanner.nextLine();
-
                 return numero;
 
             } catch (InputMismatchException e) {
-
                 scanner.nextLine();
-
                 System.out.println(
                         "Entrada inválida! Digite um número inteiro."
                 );
@@ -78,6 +76,38 @@ public class MenuConsole {
         }
     }
 
+    // Lê valores monetários, aceitando 5,50 ou 5.50.
+    public double lerValorMonetario(String mensagem) {
+
+        while (true) {
+
+            System.out.print(mensagem);
+
+            String entrada = scanner.nextLine()
+                    .trim()
+                    .replace(",", ".");
+
+            try {
+
+                double valor = Double.parseDouble(entrada);
+
+                if (Double.isFinite(valor) && valor >= 0) {
+                    return valor;
+                }
+
+                System.out.println(
+                        "Digite um valor válido e não negativo."
+                );
+
+            } catch (NumberFormatException e) {
+
+                System.out.println(
+                        "Valor inválido! Exemplo: 5,50."
+                );
+            }
+        }
+    }
+
     public void exibirMenu() {
 
         System.out.println("\n=== RESTAURANTE ===");
@@ -85,13 +115,13 @@ public class MenuConsole {
         System.out.println("2 - Listar pedidos do dia");
         System.out.println("3 - Fechar restaurante");
         System.out.println("4 - Modificar pedido");
+        System.out.println("5 - Registrar pagamento");
         System.out.println("0 - Sair");
     }
 
     public int lerOpcao() {
-
         return lerOpcaoDentroDoIntervalo(
-                "Escolha uma opção: ", 0, 4
+                "Escolha uma opção: ", 0, 5
         );
     }
 
@@ -113,18 +143,21 @@ public class MenuConsole {
         );
     }
 
-    // Personalização principal do lanche
     public ItemCardapio personalizarLanche(Lanche lanche) {
 
         ItemCardapio itemPersonalizado = lanche;
-
         boolean personalizando = true;
 
         while (personalizando) {
 
             System.out.println("\n=== PERSONALIZE SEU LANCHE ===");
-            System.out.println("Lanche: " + itemPersonalizado.getDescricao());
-            System.out.println("Preço atual: R$ " + itemPersonalizado.getPreco());
+            System.out.println(
+                    "Lanche: " + itemPersonalizado.getDescricao()
+            );
+            System.out.printf(
+                    "Preço atual: R$ %.2f%n",
+                    itemPersonalizado.getPreco()
+            );
 
             System.out.println("\n1 - Remover ingredientes");
             System.out.println("2 - Adicionar ingredientes");
@@ -155,7 +188,6 @@ public class MenuConsole {
         return itemPersonalizado;
     }
 
-    // Menu para remover ingredientes originais
     private void removerIngrediente(Lanche lanche) {
 
         System.out.println("\n=== REMOVER INGREDIENTES ===");
@@ -189,7 +221,9 @@ public class MenuConsole {
                     lanche.setQueijo(false);
                     System.out.println("Queijo removido!");
                 } else {
-                    System.out.println("Esse lanche não possui queijo.");
+                    System.out.println(
+                            "Esse lanche não possui queijo."
+                    );
                 }
                 break;
 
@@ -198,7 +232,9 @@ public class MenuConsole {
                     lanche.setAlface(false);
                     System.out.println("Alface removida!");
                 } else {
-                    System.out.println("Esse lanche não possui alface.");
+                    System.out.println(
+                            "Esse lanche não possui alface."
+                    );
                 }
                 break;
 
@@ -207,7 +243,9 @@ public class MenuConsole {
                     lanche.setTomate(false);
                     System.out.println("Tomate removido!");
                 } else {
-                    System.out.println("Esse lanche não possui tomate.");
+                    System.out.println(
+                            "Esse lanche não possui tomate."
+                    );
                 }
                 break;
 
@@ -216,7 +254,9 @@ public class MenuConsole {
                     lanche.setCebola(false);
                     System.out.println("Cebola removida!");
                 } else {
-                    System.out.println("Esse lanche não possui cebola.");
+                    System.out.println(
+                            "Esse lanche não possui cebola."
+                    );
                 }
                 break;
 
@@ -225,17 +265,16 @@ public class MenuConsole {
         }
     }
 
-    // Menu para adicionar ingredientes extras
     private ItemCardapio adicionarAdicional(ItemCardapio item) {
 
         System.out.println("\n=== ADICIONAR INGREDIENTES ===");
 
-        System.out.println("1 - Queijo extra     | R$ 3,00");
-        System.out.println("2 - Alface extra     | R$ 1,50");
-        System.out.println("3 - Tomate extra     | R$ 1,50");
-        System.out.println("4 - Cebola extra     | R$ 1,00");
-        System.out.println("5 - Cheddar          | R$ 4,00");
-        System.out.println("6 - Bacon extra      | R$ 6,00");
+        System.out.println("1 - Queijo extra | R$ 3,00");
+        System.out.println("2 - Alface extra | R$ 1,50");
+        System.out.println("3 - Tomate extra | R$ 1,50");
+        System.out.println("4 - Cebola extra | R$ 1,00");
+        System.out.println("5 - Cheddar      | R$ 4,00");
+        System.out.println("6 - Bacon extra  | R$ 6,00");
         System.out.println("0 - Voltar");
 
         int opcao = lerOpcaoDentroDoIntervalo(
@@ -280,7 +319,6 @@ public class MenuConsole {
     }
 
     public boolean querAdicionarItem() {
-
         return lerSimNao(
                 "Deseja adicionar outro lanche? (s/n): "
         );
@@ -314,7 +352,6 @@ public class MenuConsole {
     }
 
     public int lerOpcaoModificacao() {
-
         return lerOpcaoDentroDoIntervalo(
                 "Escolha uma opção: ", 0, 3
         );
@@ -333,15 +370,16 @@ public class MenuConsole {
 
             ItemCardapio item = pedido.getItens().get(i);
 
-            System.out.println(
-                    (i + 1) + " - " + item.getDescricao()
-                            + " | R$ " + item.getPreco()
+            System.out.printf(
+                    "%d - %s | R$ %.2f%n",
+                    i + 1,
+                    item.getDescricao(),
+                    item.getPreco()
             );
         }
     }
 
     public int lerNumeroItem(int quantidadeItens) {
-
         return lerOpcaoDentroDoIntervalo(
                 "Digite o número do item que deseja remover: ",
                 1,
@@ -356,12 +394,21 @@ public class MenuConsole {
 
         for (ItemCardapio item : pedido.getItens()) {
 
-            System.out.println(
-                    item.getDescricao() + " - R$ " + item.getPreco()
+            System.out.printf(
+                    "%s - R$ %.2f%n",
+                    item.getDescricao(),
+                    item.getPreco()
             );
         }
 
-        System.out.println("Total: R$ " + pedido.calcularTotal());
+        System.out.printf(
+                "Total: R$ %.2f%n",
+                pedido.calcularTotal()
+        );
+
+        System.out.println(
+                "Status: " + (pedido.isPago() ? "Pago" : "Pendente")
+        );
     }
 
     public void exibirPedidos(Collection<Pedido> pedidos) {
@@ -376,22 +423,71 @@ public class MenuConsole {
         }
     }
 
-    public void exibirFechamentoDoDia(double total) {
-
-        System.out.println("\n=== FECHAMENTO DO DIA ===");
-        System.out.println("Faturamento total: R$ " + total);
-        System.out.println("Restaurante fechado!");
-    }
-
-    public void exibirCombinacoesDiferentes(
-            Collection<String> combinacoes
+    public void exibirFechamentoDoDia(
+            Caixa caixa,
+            Collection<String> combinacoes,
+            Collection<String> lanchesBase
     ) {
 
-        System.out.println("\n=== COMBINAÇÕES DIFERENTES ===");
-        System.out.println("Quantidade: " + combinacoes.size());
+        System.out.println("\n========== FECHAMENTO DO DIA ==========");
+
+        System.out.println(
+                "Pedidos pagos: " + caixa.getQuantidadePedidosPagos()
+        );
+
+        System.out.printf(
+                "Faturamento dos pedidos: R$ %.2f%n",
+                caixa.calcularFaturamento()
+        );
+
+        System.out.printf(
+                "Total de gorjetas: R$ %.2f%n",
+                caixa.calcularTotalGorjetas()
+        );
+
+        System.out.printf(
+                "TOTAL RECEBIDO: R$ %.2f%n",
+                caixa.calcularTotalRecebido()
+        );
+
+        System.out.println(
+                "Combinações diferentes: " + combinacoes.size()
+        );
 
         for (String combinacao : combinacoes) {
             System.out.println("- " + combinacao);
+        }
+
+        System.out.println(
+                "Lanches base diferentes: " + lanchesBase.size()
+        );
+
+        for (String lanche : lanchesBase) {
+            System.out.println("- " + lanche);
+        }
+
+        System.out.println("=======================================");
+        System.out.println("Restaurante fechado!");
+    }
+
+    public void exibirTransacoes(Caixa caixa) {
+
+        System.out.println("\n=== TRANSAÇÕES REGISTRADAS ===");
+
+        if (caixa.getTransacoes().isEmpty()) {
+            System.out.println("Nenhum pagamento registrado.");
+            return;
+        }
+
+        for (Transacao transacao : caixa.getTransacoes()) {
+
+            System.out.printf(
+                    "Pedido nº %d | Pedido: R$ %.2f | Gorjeta: R$ %.2f | Total: R$ %.2f%n",
+                    transacao.getNumeroPedido(),
+                    transacao.getValorPedido(),
+                    transacao.getGorjeta(),
+                    transacao.getTotalPago()
+            );
         }
     }
 
