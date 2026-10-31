@@ -1,20 +1,26 @@
 package br.com.restaurante.cardapio;
 
-public class Lanche {
+import lombok.Getter;
+
+public class Lanche implements ItemCardapio {
+
+    @Getter
     private String nome;
     private double preco;
 
-    public Lanche (String nome, double preco){
+    public Lanche(String nome, double preco) {
         setNome(nome);
         setPreco(preco);
     }
 
-    public double getPreco() {
-        return preco;
+    @Override
+    public String getDescricao() {
+        return nome;
     }
 
-    public String getNome() {
-        return nome;
+    @Override
+    public double getPreco() {
+        return preco;
     }
 
     public void setPreco(double preco) {
