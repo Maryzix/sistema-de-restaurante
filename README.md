@@ -92,7 +92,7 @@ src/
 ### Clonar o repositório
 
 ```bash
-git clone URL_DO_REPOSITORIO
+git clone https://github.com/Maryzix/sistema-de-restaurante.git
 ```
 
 ### Acessar a pasta do projeto
