@@ -1,6 +1,5 @@
-package br.com.restaurante;
+package br.com.restaurante.app;
 
-import br.com.restaurante.app.MenuConsole;
 import br.com.restaurante.cardapio.Lanche;
 import br.com.restaurante.pedido.Pedido;
 import br.com.restaurante.pedido.RestauranteFacade;

@@ -1,6 +1,7 @@
 package br.com.restaurante.pedido;
 
 import br.com.restaurante.cardapio.Lanche;
+import br.com.restaurante.cardapio.LancheFactory;
 
 import java.util.Collection;
 
@@ -27,13 +28,13 @@ public class RestauranteFacade {
     public Lanche criarLanche(int opcao) {
         switch (opcao) {
             case 1:
-                return new Lanche("X-Burger", 16.00);
+                return LancheFactory.xBurger();
 
             case 2:
-                return new Lanche("X-Salada", 18.00);
+                return LancheFactory.xSalada();
 
             case 3:
-                return new Lanche("X-Bacon", 22.00);
+                return LancheFactory.xBacon();
 
             default:
                 return null;
