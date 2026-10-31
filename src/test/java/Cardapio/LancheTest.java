@@ -27,4 +27,15 @@ class LancheTest {
 
         assertEquals(26.0, lanche.getPreco(), 0.001);
     }
+
+    @Test
+    void retirarCebolaNaoAlteraPreco() {
+
+        Lanche lanche = LancheFactory.xBacon();
+
+        lanche.setCebola(false);
+
+        assertEquals("X-Bacon sem cebola", lanche.getDescricao());
+        assertEquals(22.0, lanche.getPreco(), 0.001);
+    }
 }
