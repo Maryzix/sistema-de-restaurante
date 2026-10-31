@@ -1,6 +1,7 @@
 package br.com.restaurante.app;
 
 import br.com.restaurante.cardapio.ItemCardapio;
+import br.com.restaurante.cardapio.Lanche;
 import br.com.restaurante.pedido.Pedido;
 
 import java.util.Collection;
@@ -38,12 +39,40 @@ public class MenuConsole {
         return Integer.parseInt(scanner.nextLine());
     }
 
+    public Lanche personalizarLanche(Lanche lanche) {
+
+        System.out.println("\n=== PERSONALIZE SEU LANCHE ===");
+
+        System.out.print("Deseja retirar o queijo? (s/n): ");
+        if (scanner.nextLine().equalsIgnoreCase("s")) {
+            lanche.setQueijo(false);
+        }
+
+        System.out.print("Deseja retirar a alface? (s/n): ");
+        if (scanner.nextLine().equalsIgnoreCase("s")) {
+            lanche.setAlface(false);
+        }
+
+        System.out.print("Deseja retirar o tomate? (s/n): ");
+        if (scanner.nextLine().equalsIgnoreCase("s")) {
+            lanche.setTomate(false);
+        }
+
+        System.out.print("Deseja retirar a cebola? (s/n): ");
+        if (scanner.nextLine().equalsIgnoreCase("s")) {
+            lanche.setCebola(false);
+        }
+
+        return lanche;
+    }
+
     public boolean querAdicionarItem() {
         System.out.print("Deseja adicionar outro lanche? (s/n): ");
         return scanner.nextLine().equalsIgnoreCase("s");
     }
 
     public void exibirPedido(Pedido pedido) {
+
         System.out.println("\nPedido nº " + pedido.getNumero());
         System.out.println("Cliente: " + pedido.getNomeCliente());
 
@@ -57,6 +86,7 @@ public class MenuConsole {
     }
 
     public void exibirPedidos(Collection<Pedido> pedidos) {
+
         if (pedidos.isEmpty()) {
             System.out.println("Nenhum pedido registrado.");
             return;
