@@ -1,7 +1,10 @@
 package br.com.restaurante.cardapio;
 
 public interface ItemCardapio {
-        String getDescricao();
-        double getPreco();
 
+        String getDescricao();
+
+        String getNomeBase();
+
+        double getPreco();
 }

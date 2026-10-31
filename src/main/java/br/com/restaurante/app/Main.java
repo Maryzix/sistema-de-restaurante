@@ -2,6 +2,7 @@ package br.com.restaurante.app;
 
 import br.com.restaurante.cardapio.ItemCardapio;
 import br.com.restaurante.cardapio.Lanche;
+import br.com.restaurante.financeiro.Caixa;
 import br.com.restaurante.pedido.Pedido;
 import br.com.restaurante.pedido.RestauranteFacade;
 
@@ -57,13 +58,13 @@ public class Main {
 
                 case 3:
 
-                    double total = sistema.calcularTotalDoDia();
-
-                    menu.exibirFechamentoDoDia(total);
-
-                    menu.exibirCombinacoesDiferentes(
-                            sistema.listarCombinacoesDiferentes()
+                    menu.exibirFechamentoDoDia(
+                            sistema.getCaixa(),
+                            sistema.listarCombinacoesDiferentes(),
+                            sistema.listarLanchesBaseDiferentes()
                     );
+
+                    menu.exibirTransacoes(sistema.getCaixa());
 
                     executando = false;
                     break;
@@ -113,7 +114,6 @@ public class Main {
                                 );
 
                                 menu.exibirPedido(pedidoEncontrado);
-
                                 break;
 
                             case 2:
@@ -138,7 +138,6 @@ public class Main {
                                 );
 
                                 menu.exibirPedido(pedidoEncontrado);
-
                                 break;
 
                             case 3:
@@ -164,6 +163,56 @@ public class Main {
                                 modificando = false;
                                 break;
                         }
+                    }
+
+                    break;
+
+                case 5:
+
+                    int numeroPagamento = menu.lerNumeroPedido();
+
+                    Pedido pedidoPagamento =
+                            sistema.buscarPedido(numeroPagamento);
+
+                    if (pedidoPagamento == null) {
+                        menu.exibirMensagem("Pedido não encontrado!");
+                        break;
+                    }
+
+                    if (pedidoPagamento.isPago()) {
+                        menu.exibirMensagem(
+                                "Este pedido já foi pago!"
+                        );
+                        break;
+                    }
+
+                    if (pedidoPagamento.getItens().isEmpty()) {
+                        menu.exibirMensagem(
+                                "Não é possível pagar um pedido sem itens."
+                        );
+                        break;
+                    }
+
+                    menu.exibirPedido(pedidoPagamento);
+
+                    double gorjeta = menu.lerValorMonetario(
+                            "Informe o valor da gorjeta (R$): "
+                    );
+
+                    boolean pagamentoRegistrado =
+                            sistema.registrarPagamento(
+                                    numeroPagamento,
+                                    gorjeta
+                            );
+
+                    if (pagamentoRegistrado) {
+                        menu.exibirMensagem(
+                                "Pagamento registrado com sucesso!"
+                        );
+                    } else {
+                        menu.exibirMensagem(
+                                "Não foi possível registrar o pagamento."
+                        );
                     }
 
                     break;

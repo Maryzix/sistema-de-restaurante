@@ -35,7 +35,7 @@ class LancheTest {
 
         lanche.setCebola(false);
 
-        assertEquals("X-Bacon sem cebola", lanche.getDescricao());
+        assertEquals("X-Bacon (pão, hambúrguer, queijo, bacon, alface, tomate, cebola) sem cebola", lanche.getDescricao());
         assertEquals(22.0, lanche.getPreco(), 0.001);
     }
 }
