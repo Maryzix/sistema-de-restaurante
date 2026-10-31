@@ -2,6 +2,7 @@ package br.com.restaurante.pedido;
 
 import br.com.restaurante.cardapio.ItemCardapio;
 import lombok.Getter;
+
 import java.util.ArrayList;
 
 @Getter
@@ -28,7 +29,20 @@ public class Pedido {
     }
 
     public void adicionarItem(ItemCardapio item) {
+        if (item == null) {
+            throw new IllegalArgumentException("O item não pode ser nulo.");
+        }
+
         itens.add(item);
+    }
+
+    public ItemCardapio removerItem(int numeroItem) {
+
+        if (numeroItem < 1 || numeroItem > itens.size()) {
+            throw new IllegalArgumentException("Número de item inválido.");
+        }
+
+        return itens.remove(numeroItem - 1);
     }
 
     public double calcularTotal() {

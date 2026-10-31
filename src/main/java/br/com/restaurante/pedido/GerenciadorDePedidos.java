@@ -21,6 +21,10 @@ public class GerenciadorDePedidos {
         return pedidos.get(numero);
     }
 
+    public boolean cancelarPedido(int numero) {
+        return pedidos.remove(numero) != null;
+    }
+
     public Collection<Pedido> getPedidos() {
         return pedidos.values();
     }
