@@ -1,12 +1,13 @@
 package br.com.restaurante.app;
 
-import br.com.restaurante.cardapio.Lanche;
+import br.com.restaurante.cardapio.ItemCardapio;
 import br.com.restaurante.pedido.Pedido;
 
 import java.util.Collection;
 import java.util.Scanner;
 
 public class MenuConsole {
+
     private Scanner scanner = new Scanner(System.in);
 
     public void exibirMenu() {
@@ -46,9 +47,9 @@ public class MenuConsole {
         System.out.println("\nPedido nº " + pedido.getNumero());
         System.out.println("Cliente: " + pedido.getNomeCliente());
 
-        for (Lanche lanche : pedido.getItens()) {
+        for (ItemCardapio item : pedido.getItens()) {
             System.out.println(
-                    lanche.getNome() + " - R$ " + lanche.getPreco()
+                    item.getDescricao() + " - R$ " + item.getPreco()
             );
         }
 

@@ -1,17 +1,19 @@
 package br.com.restaurante.pedido;
 
+import br.com.restaurante.cardapio.ItemCardapio;
 import lombok.Getter;
-import br.com.restaurante.cardapio.Lanche;
 import java.util.ArrayList;
 
 @Getter
 public class Pedido {
+
     private int numero;
     private String nomeCliente;
-    private ArrayList<Lanche> itens = new ArrayList<>();
+    private ArrayList<ItemCardapio> itens;
 
     public Pedido(int numero, String nomeCliente) {
         this.numero = numero;
+        this.itens = new ArrayList<>();
         setNomeCliente(nomeCliente);
     }
 
@@ -25,15 +27,15 @@ public class Pedido {
         this.nomeCliente = nomeCliente;
     }
 
-    public void adicionarItem(Lanche lanche) {
-        itens.add(lanche);
+    public void adicionarItem(ItemCardapio item) {
+        itens.add(item);
     }
 
     public double calcularTotal() {
         double total = 0;
 
-        for (Lanche lanche : itens) {
-            total += lanche.getPreco();
+        for (ItemCardapio item : itens) {
+            total += item.getPreco();
         }
 
         return total;
